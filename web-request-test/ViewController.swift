@@ -12,12 +12,24 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
+        let urlString = "http://swapi.co/api/people/1"
+        let url = NSURL(string: urlString)!
+        let session = NSURLSession.sharedSession()
+        
+        session.dataTaskWithURL(url) { (data: NSData?, response: NSURLResponse?, error: NSError?) -> Void in
+            
+            if let responseData = data {
+                
+                do {
+                    let json = try NSJSONSerialization.JSONObjectWithData(responseData, options: NSJSONReadingOptions.AllowFragments)
+                    
+                    print(json)
+                } catch {
+                    print("Could not serialize")
+                }
+            }
+        }.resume()
     }
 
 
